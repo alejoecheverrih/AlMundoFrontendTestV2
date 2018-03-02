@@ -1,0 +1,20 @@
+{
+  "name": "almundofrontendtestv2",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+	"ng": "ng",
+    "start": "ng serve"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "bootstrap": "^4.0.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "method-override": "^2.3.10",
+    "mongoose": "^5.0.7",
+    "morgan": "~1.9.0",
+    "serve-favicon": "~2.4.5"
+  }
+}

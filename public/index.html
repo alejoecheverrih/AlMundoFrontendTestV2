@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html ng-app="AppHotel">
+<head>
+	<meta charset="utf-8">
+	<title>Vuelos, Hoteles, Paquetes y más para tu viaje | almundo.com</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="stylesheets\style.css"  />
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="./javascripts/hotel_controller.js"></script>
+</head>
+<body ng-controller="HotelController">
+	<div id="div-banner">
+		<img src="/images/logo-almundo.svg" alt="Vuelos, Hoteles, Paquetes y más para tu viaje | almundo.com">
+	</div>
+	<div id="div-body">
+		<div id="div-filters">
+			<div id="div-filters-title">
+				Filtros	
+			</div>
+			<div id="div-filters-search">
+				<div>
+					<img src="/images/icons/filters/search.svg" width="5%" height="5%" />&nbsp;
+					Nombre de hotel &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<img id="img-search-triang-up" src="/images/icons/filters/triangule_up.svg" width="5%" height="5%" ng-hide="searchTriangUp" ng-click="hideSearchFilter1()" />
+					<img id="img-search-triang-down" src="/images/icons/filters/triangule_down.svg" width="5%" height="5%" ng-hide="searchTriangDown" ng-click="hideSearchFilter2()" />
+				</div>
+				<div id="search-form" ng-hide="hideSearchForm">
+					<form ng-submit="searchHotel()">
+						<div id="input-search-1">
+							<input ng-model="filtroHotel" type="text" class="form-control" placeholder="Ingrese nombre del hotel">
+						</div>
+						<div id="input-search-2">
+							<input type="submit" class="btn btn-primary" value="Aceptar">
+						</div>
+					</form>						
+				</div>
+			</div>
+			<div id="div-filters-stars">
+				<div>
+					<img src="/images/icons/filters/star_blue.svg" width="5%" height="5%" />&nbsp;
+					Estrellas &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<img id="img-stars-triang-up" src="/images/icons/filters/triangule_up.svg" width="5%" height="5%" ng-hide="starsTriangUp" ng-click="hideStarsFilter1()" />	
+					<img id="img-stars-triang-down" src="/images/icons/filters/triangule_down.svg" width="5%" height="5%" ng-hide="starsTriangDown" ng-click="hideStarsFilter2()" />
+				</div>
+				<div id="div-stars-list" ng-hide="hideStarsForm">
+					<div>
+						<input class="form-check-input" type="checkbox" ng-model="cbAllStars" id="cbAllStars" >
+						Todas las estrellas 
+					</div>
+					<div>
+						<input class="form-check-input" type="checkbox" ng-model="cb5Stars" id="cb5Stars" ng-change="searchBy5Star()">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+					</div>
+					<div>
+						<input class="form-check-input" type="checkbox" ng-model="cb4Stars" id="cb4Stars" ng-change="searchBy4Star()">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+					</div>
+					<div>
+						<input class="form-check-input" type="checkbox" ng-model="cb3Stars" id="cb3Stars" ng-change="searchBy3Star()">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+					</div>
+					<div>
+						<input class="form-check-input" type="checkbox" ng-model="cb2Stars" id="cb2Stars" ng-change="searchBy2Star()">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+					</div>
+					<div>
+						<input class="form-check-input" type="checkbox" ng-model="cb1Stars" id="cb1Stars" ng-change="searchBy1Star()" >
+						<img src="/images/icons/filters/star_yellow.svg" width="5%" height="5%">
+					</div>
+				</div>
+					
+			</div>
+		</div>
+		<div id="div-hotels" ng-repeat="hotel in hotels track by $index" ng-hide="ocultarListaPrincipal" ng-cloak>
+			<div id="div-hotels-list-1">
+				<img ng-src="/images/{{hotel.image}}" title="{{hotel.name}}">				
+			</div>
+			
+			<div id="div-hotels-list-2" ng-cloak>
+				{{ hotel.name }}
+				<br>
+				<div ng-if="buildStarsView(hotel.stars)" ng-bind-html="renderHtml(estrella)"></div>
+
+				<div class="div-amenities" >
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[0]}}.svg" title="{{hotel.amenities[0]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[1]}}.svg" title="{{hotel.amenities[1]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[2]}}.svg" title="{{hotel.amenities[2]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[3]}}.svg" title="{{hotel.amenities[3]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[4]}}.svg" title="{{hotel.amenities[4]}}" width="2%" height="2%">
+				</div>
+				
+			</div>
+
+			<div id="div-hotels-list-3">
+				Precio por noche por <br> habitación <br>
+				<h7> ARS </h7>  <h8> {{hotel.price}} </h8>
+				<br>
+				<button type="button" class="btn btn-primary btn-lg">Ver hotel</button>
+			</div>
+		</div>
+		
+		<div id="div-hotels" ng-repeat="hotel in hotelsFiltered track by $index" ng-hide="ocultarListaPorNombre" ng-cloak>
+			<div id="div-hotels-list-1">
+				<img ng-src="/images/{{hotel.image}}" title="{{hotel.name}}">				
+			</div>
+			
+			<div id="div-hotels-list-2" ng-cloak>
+				{{ hotel.name }}
+				<br>
+				<div ng-if="buildStarsView(hotel.stars)" ng-bind-html="renderHtml(estrella)"></div>
+				<div class="div-amenities" >
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[0]}}.svg" title="{{hotel.amenities[0]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[1]}}.svg" title="{{hotel.amenities[1]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[2]}}.svg" title="{{hotel.amenities[2]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[3]}}.svg" title="{{hotel.amenities[3]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[4]}}.svg" title="{{hotel.amenities[4]}}" width="2%" height="2%">
+				</div>
+			</div>
+
+			<div id="div-hotels-list-3" ng-cloak>
+				Precio por noche por <br> habitación <br>
+				<h7> ARS </h7>  <h8> {{hotel.price}} </h8>
+				<br>
+				<button type="button" class="btn btn-primary btn-lg">Ver hotel</button>
+			</div>
+		</div>
+
+
+		<div id="div-hotels" ng-repeat="hotel in hotelsFilteredByStar track by $index" ng-hide="ocultarListaPorEstrellas" ng-cloak>
+			<div id="div-hotels-list-1">
+				<img ng-src="/images/{{hotel.image}}" title="{{hotel.name}}">				
+			</div>
+			
+			<div id="div-hotels-list-2" ng-cloak>
+				{{ hotel.name }}
+				<br>
+				<div ng-if="buildStarsView(hotel.stars)" ng-bind-html="renderHtml(estrella)"></div>
+				<div class="div-amenities" >
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[0]}}.svg" title="{{hotel.amenities[0]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[1]}}.svg" title="{{hotel.amenities[1]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[2]}}.svg" title="{{hotel.amenities[2]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[3]}}.svg" title="{{hotel.amenities[3]}}" width="2%" height="2%">
+					<img ng-src="/images/icons/amenities/{{hotel.amenities[4]}}.svg" title="{{hotel.amenities[4]}}" width="2%" height="2%">
+				</div>	
+			</div>
+
+			<div id="div-hotels-list-3" ng-cloak>
+				Precio por noche por <br> habitación <br>
+				<h7> ARS </h7>  <h8> {{hotel.price}} </h8>
+				<br>
+				<button type="button" class="btn btn-primary btn-lg">Ver hotel</button>
+			</div>
+		</div>
+	</div>
+		
+</body>
+</html>
